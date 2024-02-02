@@ -7,7 +7,7 @@ type FiFoMap struct {
 	queue queue.Queue
 }
 
-func New(size int) *FiFoMap {
+func NewFiFoMap(size int) *FiFoMap {
 	return &FiFoMap{
 		data:  map[string]interface{}{},
 		queue: queue.New(size),
