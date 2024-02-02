@@ -3,14 +3,16 @@ package power_map
 import "github.com/yimiaoxiehou/go-tools/queue"
 
 type FiFoMap struct {
-	data  map[string]interface{}
-	queue queue.Queue
+	data      map[string]interface{}
+	queue     queue.Queue
+	clearFunc func(v interface{})
 }
 
-func NewFiFoMap(size int) *FiFoMap {
+func NewFiFoMap(size int, clearFunc func(v interface{})) *FiFoMap {
 	return &FiFoMap{
-		data:  map[string]interface{}{},
-		queue: queue.New(size),
+		data:      map[string]interface{}{},
+		queue:     queue.New(size),
+		clearFunc: clearFunc,
 	}
 }
 
@@ -29,6 +31,9 @@ func (m *FiFoMap) Has(key string) bool {
 func (m *FiFoMap) Set(key string, value interface{}) {
 	if m.queue.IsFull() {
 		removeKey := m.queue.Pop().(string)
+		if v, ok := m.data[removeKey]; ok {
+			m.clearFunc(v)
+		}
 		delete(m.data, removeKey)
 	}
 	m.data[key] = value
