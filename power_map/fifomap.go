@@ -13,7 +13,7 @@ type FiFoMap struct {
 func NewFiFoMap(size int, clearFunc func(v interface{})) *FiFoMap {
 	return &FiFoMap{
 		data:      map[string]interface{}{},
-		queue:     queue.New(size),
+		queue:     queue.NewQueue(size),
 		clearFunc: clearFunc,
 	}
 }
